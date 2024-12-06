@@ -52,12 +52,42 @@ test.describe("Baum Academy courses page", () => {
     await expect(kidsSat).toBeVisible();
   });
 
-  // navigate to courses page by clicking on the courses button
-  // test qa engineering course is showing on the page
-  // test kids coding course is showing on the page
-  // test kids coding saturday course is showing on the page
-});
+  test("navigate to learn more", async ({ page }) => {
+    const courseLink = page.getByRole("link", { name: "courses" });
+    await courseLink.click();
 
+    const learnMoreButton = page.getByText("LEARN MORE");
+    await expect(learnMoreButton).toBeVisible();
+    await learnMoreButton.click();
+
+    const whyQa = page.getByText("WHY QA ENGINEERING?");
+    await expect(whyQa).toBeVisible();
+  });
+
+  test("navigate to after school", async ({ page }) => {
+    const courseLink = page.getByRole("link", { name: "courses" });
+    await courseLink.click();
+
+    const afterSchoolButton = page.getByText("After School - Coming Soon");
+    await expect(afterSchoolButton).toBeVisible();
+    await afterSchoolButton.click();
+
+    const contactPage = page.getByText("Any Questions?");
+    await expect(contactPage).toBeVisible();
+  });
+
+  test("navigate to saturday school", async ({ page }) => {
+    const courseLink = page.getByRole("link", { name: "courses" });
+    await courseLink.click();
+
+    const satSchoolButton = page.getByText("Sat School - Coming Soon");
+    await expect(satSchoolButton).toBeVisible();
+    await satSchoolButton.click();
+
+    const contactPage = page.getByText("Any Questions?");
+    await expect(contactPage).toBeVisible();
+  });
+});
 test.describe("Baum Academy contact page", () => {
   test("should navigate to contact page", async ({ page }) => {
     const contactLink = page.getByRole("link", { name: "contact" });
@@ -70,3 +100,41 @@ test.describe("Baum Academy contact page", () => {
   // test contact form submit
   // test contact form success
 });
+
+test.describe("Baum academy pages", () => {
+  test("going through baum academy tabs", async ({ page }) => {
+    const welcome = page.getByText("Welcome to Baum Academy");
+    await expect(welcome).toBeVisible();
+
+    const coursesLink = page.getByRole("link", { name: "courses" });
+    await coursesLink.click();
+
+    const coursePage = page.getByText("Kids Coding - After School Class");
+    await expect(coursePage).toBeVisible();
+
+    const afterSchool = page.getByText("After School - Coming Soon");
+    await afterSchool.click();
+
+    const contactPage = page.getByText("Any Questions?");
+    await expect(contactPage).toBeVisible();
+
+    const sendButton = page.locator("button", {
+      hasText: "SEND",
+    });
+    await sendButton.click();
+
+    const error = page.locator("p", {
+      hasText:
+        "Form submission failed. Review the following information: Name, Email, and Message.",
+    });
+    await expect(error).toBeVisible();
+  });
+});
+// go to baumacademy.com
+// expect page is home page
+// click courses link
+// expect page is courses page
+// click after school kids coding
+// expect page is contact page
+// click send button
+// expect all/or one of the error messages
