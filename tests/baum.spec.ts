@@ -1,4 +1,5 @@
 import { test, expect, type Page } from "@playwright/test";
+import { after } from "node:test";
 
 test.beforeEach(async ({ page }) => {
   await page.goto("https://baumacademy.com");
@@ -57,10 +58,58 @@ test.describe("Baum Academy courses page", () => {
     });
     await expect(kidSat).toBeVisible();
   });
+  test("navigate to learn more", async ({ page }) => {
+    const courseLink = page.getByRole("link", { name: "courses" });
+    await courseLink.click();
+
+    const learnMoreBtn = page.getByText("LEARN MORE");
+    await expect(learnMoreBtn).toBeVisible();
+    await learnMoreBtn.click();
+
+    const whyQA = page.getByText("WHY QA ENGINEERING");
+    await expect(whyQA).toBeVisible();
+  });
+  test("navigate to after school-coming soon", async ({ page }) => {
+    const courseLink = page.getByRole("link", { name: "courses" });
+    await courseLink.click();
+
+    const afterSchoolComing = page.getByText("After School - Coming Soon");
+    await expect(afterSchoolComing).toBeVisible();
+    await afterSchoolComing.click();
+
+    const lookForQuestions = page.getByText("Any Questions?");
+    await expect(lookForQuestions).toBeVisible();
+  });
 });
 
-test.describe("Baum Academy contact page", () => {
+test.describe("Baum Academy", () => {
   // navigate to contact page by clicking on the contact button
   // test contact form submit
   // test contact form success
+  //
+  // go to baumacademy.com 12/5/24
+  // expect page is home page
+  test("contact form error message", async ({ page }) => {
+    const coursesLink = page.getByText("courses");
+    await expect(coursesLink).toBeVisible();
+    await coursesLink.click();
+
+    const afterKidsCoding = page.locator("h2", {
+      hasText: "Kids Coding - After School Class",
+    });
+    await expect(afterKidsCoding).toBeVisible();
+    await afterKidsCoding.click();
+
+    const lookForQuestions = page.getByText("Any Questions?");
+    await expect(lookForQuestions).toBeVisible();
+
+    const sendBtn = page.getByRole("button", { name: "send" });
+    await sendBtn.click();
+  });
 });
+// click courses link
+// expect page is courses page
+// click after school kids coding
+// expect page is contact page
+// click send button
+// expect all/or one of the error message
